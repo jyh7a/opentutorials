@@ -6,56 +6,45 @@ const url = require('url')
 // 서버생성
 const app = http.createServer((req, res) => {
   let _url = req.url;
+  console.log(_url);
   let queryData = url.parse(_url, true).query;
-  console.log(queryData.id)
-
-  if(_url == '/'){ _url = '/index.html' }
-  else if(_url == '/favicon.ico'){ return res.writeHead(404) }
+  let title = queryData.id
   
+  if(_url == '/') title = 'Welcome' 
+  else if(_url == '/favicon.ico') return res.writeHead(404) 
 
   res.writeHead(200);
-  let template = `
-  <!DOCTYPE html>
-  <html>
+  fs.readFile(`data/${title}`, 'utf8', (err, data) => {
+    if(err) console.log(err)
 
-  <head>
-    <title>WEB1 - ${queryData.id}</title>
-    <meta charset="utf-8" />
-  </head>
+    let template = `
+    <!DOCTYPE html>
+    <html>
 
-  <body>
-    <h1><a href="index.html">WEB</a></h1>
+    <head>
+      <title>WEB1 - ${title}</title>
+      <meta charset="utf-8" />
+    </head>
 
-    <ol>
-      <li><a href="1.html">HTML</a></li>
-      <li><a href="2.html">CSS</a></li>
-      <li><a href="3.html">JavaScript</a></li>
-    </ol>
+    <body>
+      <h1><a href="/">WEB</a></h1>
 
-    <h2>${queryData.id}</h2>
+      <ul>
+        <li><a href="1.html?id=HTML">HTML</a></li>
+        <li><a href="2.html?id=CSS">CSS</a></li>
+        <li><a href="3.html?id=JavaScript">JavaScript</a></li>
+      </ul>
 
-    <p>
-      <a href="https://www.w3.org/TR/html5/" target="_blank" title="html5 speicification">Hypertext Markup Language
-        (HTML)</a>
-      is the standard markup language for
-      <strong>creating <u>web</u> pages</strong> and web applications.Web
-      browsers receive HTML documents from a web server or from local storage
-      and render them into multimedia web pages. HTML describes the structure of
-      a web page semantically and originally included cues for the appearance of
-      the document.
-      <img src="coding.jpg" width="100%" />
-    </p>
-    <p style="margin-top: 45px;">
-      HTML elements are the building blocks of HTML pages. With HTML constructs,
-      images and other objects, such as interactive forms, may be embedded into
-      the rendered page. It provides a means to create structured documents by
-      denoting structural semantics for text such as headings, paragraphs,
-      lists, links, quotes and other items. HTML elements are delineated by
-      tags, written using angle brackets.
-    </p>
-  </body>
-  </html>
+      <h2>${title}</h2>
+
+      <p>
+        ${data}
+      </p>
+    </body>
+    </html>
   `
   res.end(template)
+  })
+  
   
 }).listen(3000);
