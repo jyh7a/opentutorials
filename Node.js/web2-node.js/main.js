@@ -13,9 +13,9 @@ const app = http.createServer((req, res) => {
   console.log(url.parse(_url, true))
 
   if(pathname === '/'){
-    fs.readFile(`data/${title}`, 'utf8', (err, description) => {
-      if(err) console.log(err)
-  
+    if(title === undefined){
+      let title = 'Welcome'
+      let description = 'Hello, Node.js'
       let template = `
       <!DOCTYPE html>
       <html>
@@ -34,10 +34,38 @@ const app = http.createServer((req, res) => {
         <p>${description}</p>
       </body>
       </html>
-    `
+      `
     res.writeHead(200)
     res.end(template)
-    })
+    }else{
+      fs.readFile(`data/${title}`, 'utf8', (err, description) => {
+        if(err) console.log(err)
+    
+        let template = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>WEB1 - ${title}</title>
+          <meta charset="utf-8" />
+        </head>
+        <body>
+          <h1><a href="/">WEB</a></h1>
+          <ul>
+            <li><a href="1.html?id=HTML">HTML</a></li>
+            <li><a href="2.html?id=CSS">CSS</a></li>
+            <li><a href="3.html?id=JavaScript">JavaScript</a></li>
+          </ul>
+          <h2>${title}</h2>
+          <p>${description}</p>
+        </body>
+        </html>
+      `
+      res.writeHead(200)
+      res.end(template)
+      })
+    }
+
+    
   }else{
     res.writeHead(404)
     res.end('Not Found')
