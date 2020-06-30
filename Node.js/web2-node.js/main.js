@@ -10,62 +10,71 @@ const app = http.createServer((req, res) => {
   let pathname = url.parse(_url, true).pathname
   let title = queryData.id
 
-  console.log(url.parse(_url, true))
+  console.log('url : ', url.parse(_url, true))
 
   if(pathname === '/'){
     if(title === undefined){
-      let title = 'Welcome'
-      let description = 'Hello, Node.js'
-      let template = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>WEB1 - ${title}</title>
-        <meta charset="utf-8" />
-      </head>
-      <body>
-        <h1><a href="/">WEB</a></h1>
-        <ul>
-          <li><a href="1.html?id=HTML">HTML</a></li>
-          <li><a href="2.html?id=CSS">CSS</a></li>
-          <li><a href="3.html?id=JavaScript">JavaScript</a></li>
-        </ul>
-        <h2>${title}</h2>
-        <p>${description}</p>
-      </body>
-      </html>
-      `
-    res.writeHead(200)
-    res.end(template)
-    }else{
-      fs.readFile(`data/${title}`, 'utf8', (err, description) => {
-        if(err) console.log(err)
-    
+      fs.readdir('./data', (err, files) => {
+        console.log(files)
+        let title = 'Welcome'
+        let description = 'Hello, Node.js'
+
+        let list = `<ul>`
+        for(var i=0; i<files.length; i++){
+          list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
+        }
+        list += `</ul>`
+
         let template = `
         <!DOCTYPE html>
         <html>
         <head>
           <title>WEB1 - ${title}</title>
-          <meta charset="utf-8" />
+          <meta charset="utf-8" /> 
         </head>
         <body>
           <h1><a href="/">WEB</a></h1>
-          <ul>
-            <li><a href="1.html?id=HTML">HTML</a></li>
-            <li><a href="2.html?id=CSS">CSS</a></li>
-            <li><a href="3.html?id=JavaScript">JavaScript</a></li>
-          </ul>
+          ${list}
           <h2>${title}</h2>
           <p>${description}</p>
-        </body>
-        </html>
-      `
-      res.writeHead(200)
-      res.end(template)
+        </body> 
+        </html>`
+        res.writeHead(200)
+        res.end(template)
+      })
+    }else{
+      fs.readdir('./data', (err, files) => {
+        console.log(files)
+
+        let list = `<ul>`
+        for(var i=0; i<files.length; i++){
+          list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
+        }
+        list += `</ul>`
+
+        fs.readFile(`data/${title}`, 'utf8', (err, description) => {
+          if(err) console.log(`err: ${err}`)
+      
+          let template = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>WEB1 - ${title}</title>
+            <meta charset="utf-8" />
+          </head>
+          <body>
+            <h1><a href="/">WEB</a></h1>
+            ${list}
+            <h2>${title}</h2>
+            <p>${description}</p>
+          </body>
+          </html>
+        `
+        res.writeHead(200)
+        res.end(template)
+        })
       })
     }
-
-    
   }else{
     res.writeHead(404)
     res.end('Not Found')
