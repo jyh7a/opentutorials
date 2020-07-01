@@ -66,11 +66,12 @@ const app = http.createServer((req, res) => {
             <a href="/create">create</a>
             <a href="/update?id=${title}">update</a>
             <form name='delete' method='post' 
-            onsubmit="const r = confirm('정말 삭제 하시겠습니까?'); 
-            if(r){
-              document.delete.action = 'delete_process';  
-              document.delete.submit();
-            }else{}">
+              onsubmit="const r = confirm('정말 삭제 하시겠습니까?'); 
+              if(r){
+                document.delete.action = 'delete_process';  
+                document.delete.submit();
+              }else{}"
+            >
               <input type="hidden" name='id' value='${title}'>
               <input type="submit" value='delete'>
             </form>`)
@@ -148,6 +149,18 @@ const app = http.createServer((req, res) => {
           res.writeHead(302, {Location: `/?id=${title}`})
           res.end()
         })
+      })
+    })
+  }else if(pathname === `/delete_process`){
+    let body ='';
+    req.on('data', (data) => body += data)
+    req.on('end', () => {
+      let post = qs.parse(body)
+      let id = post.id
+      fs.unlink(`data/${id}`, (err) => {
+        if(err) console.log(err)
+        res.writeHead(302, {Location: `/`})
+        res.end()
       })
     })
   }else{
