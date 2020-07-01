@@ -3,6 +3,31 @@ const http = require('http')
 const fs = require('fs')
 const url = require('url')
 
+const templateHTML = (title, list, body) => {
+  return `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>WEB1 - ${title}</title>
+    <meta charset="utf-8" /> 
+  </head>
+  <body>
+    <h1><a href="/">WEB</a></h1>
+    ${list}
+    ${body}
+  </body> 
+  </html>`
+}
+
+const templateList = (files) => {
+  let list = `<ul>`
+  for(var i=0; i<files.length; i++){
+    list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
+  }
+  list += `</ul>`
+  return list;
+}
+
 // 서버생성
 const app = http.createServer((req, res) => {
   let _url = req.url
@@ -18,60 +43,23 @@ const app = http.createServer((req, res) => {
         console.log(files)
         let title = 'Welcome'
         let description = 'Hello, Node.js'
+        let list = templateList(files)
+        let template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`)
 
-        let list = `<ul>`
-        for(var i=0; i<files.length; i++){
-          list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
-        }
-        list += `</ul>`
-
-        let template = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>WEB1 - ${title}</title>
-          <meta charset="utf-8" /> 
-        </head>
-        <body>
-          <h1><a href="/">WEB</a></h1>
-          ${list}
-          <h2>${title}</h2>
-          <p>${description}</p>
-        </body> 
-        </html>`
         res.writeHead(200)
         res.end(template)
       })
     }else{
       fs.readdir('./data', (err, files) => {
         console.log(files)
-
-        let list = `<ul>`
-        for(var i=0; i<files.length; i++){
-          list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
-        }
-        list += `</ul>`
+        let list = templateList(files)
 
         fs.readFile(`data/${title}`, 'utf8', (err, description) => {
           if(err) console.log(`err: ${err}`)
-      
-          let template = `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>WEB1 - ${title}</title>
-            <meta charset="utf-8" />
-          </head>
-          <body>
-            <h1><a href="/">WEB</a></h1>
-            ${list}
-            <h2>${title}</h2>
-            <p>${description}</p>
-          </body>
-          </html>
-        `
-        res.writeHead(200)
-        res.end(template)
+        
+          let template = templateHTML(title, list, `<h2>${title}</h2><p>${description}</p>`)
+          res.writeHead(200)
+          res.end(template)
         })
       })
     }
