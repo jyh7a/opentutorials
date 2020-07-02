@@ -4,30 +4,31 @@ const fs = require('fs')
 const url = require('url')
 const qs = require('querystring')
 
-const templateHTML = (title, list, body, control) => {
-  return `
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <title>WEB1 - ${title}</title>
-    <meta charset="utf-8" /> 
-  </head>
-  <body>
-    <h1><a href="/">WEB</a></h1>
-    ${list}
-    ${control}
-    ${body}
-  </body> 
-  </html>`
-}
-
-const templateList = (files) => {
-  let list = `<ul>`
-  for(var i=0; i<files.length; i++){
-    list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
+const template = {
+  html: function(title, list, body, control){
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>WEB1 - ${title}</title>
+      <meta charset="utf-8" /> 
+    </head>
+    <body>
+      <h1><a href="/">WEB</a></h1>
+      ${list}
+      ${control}
+      ${body}
+    </body> 
+    </html>`
+  },
+  list: function(files){
+    let list = `<ul>`
+    for(var i=0; i<files.length; i++){
+      list += `<li><a href="/?id=${files[i]}">${files[i]}</a></li>`
+    }
+    list += `</ul>`
+    return list;
   }
-  list += `</ul>`
-  return list;
 }
 
 // 서버생성
@@ -45,22 +46,22 @@ const app = http.createServer((req, res) => {
         console.log(files)
         let title = 'Welcome'
         let description = 'Hello, Node.js'
-        let list = templateList(files)
-        let template = templateHTML(title, list,
+        let list = template.list(files)
+        let html= template.html(title, list,
           `<h2>${title}</h2><p>${description}</p>`,
           `<a href="/create">create</a>`)
         res.writeHead(200)
-        res.end(template)
+        res.end(html)
       })
     }else{
       fs.readdir('./data', (err, files) => {  
         console.log(files) 
-        let list = templateList(files)
+        let list = template.list(files)
 
         fs.readFile(`data/${title}`, 'utf8', (err, description) => {
           if(err) console.log(`err: ${err}`)
         
-          let template = templateHTML(title, list,
+          let html= template.html(title, list,
             `<h2>${title}</h2><p>${description}</p>`,
             `
             <a href="/create">create</a>
@@ -76,7 +77,7 @@ const app = http.createServer((req, res) => {
               <input type="submit" value='delete'>
             </form>`)
           res.writeHead(200)
-          res.end(template)
+          res.end(html)
         })
       })
     }
@@ -84,8 +85,8 @@ const app = http.createServer((req, res) => {
     fs.readdir('./data', (err, files) => {
       console.log(files)
       let title = 'WEB - create'
-      let list = templateList(files)
-      let template = templateHTML(title, list, `
+      let list = template.list(files)
+      let html= template.html(title, list, `
       <h1>${title}</h1>
       <form action="/create_process" method="POST">
         <p><input type="text" name="title" placeholder="title"/></p>
@@ -97,7 +98,7 @@ const app = http.createServer((req, res) => {
       `여긴 크리에이트 페이지야..`)
 
       res.writeHead(200)
-      res.end(template)
+      res.end(html)
     })
   }else if(pathname === '/create_process'){
     let body ='';
@@ -118,8 +119,8 @@ const app = http.createServer((req, res) => {
       console.log(files) 
       fs.readFile(`data/${title}`, 'utf8', (err, description) => {
         if(err) console.log(`err: ${err}`)
-        let list = templateList(files)        
-        let template = templateHTML(title, list,
+        let list = template.list(files)        
+        let html= template.html(title, list,
           `
           <form action="/update_process" method="POST">
             <input type="hidden" name="id" value="${title}"/>
@@ -131,7 +132,7 @@ const app = http.createServer((req, res) => {
            </form>`,
           `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`)
         res.writeHead(200)
-        res.end(template)
+        res.end(html)
       })
     })
   }else if(pathname === `/update_process`){
