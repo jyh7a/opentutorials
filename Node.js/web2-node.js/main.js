@@ -5,6 +5,7 @@ const url = require('url')
 const qs = require('querystring')
 const template = require('./lib/template')
 const path = require('path')
+const sanitizeHtml = require('sanitize-html')
 
 // 서버생성
 const app = http.createServer((req, res) => {
@@ -35,12 +36,16 @@ const app = http.createServer((req, res) => {
         console.log(files) 
         fs.readFile(`data/${filteredId}`, 'utf8', (err, description) => {
           if(err) console.log(`err: ${err}`)
-          let list = template.list(files)
-          let html= template.html(filteredId, list,
-            `<h2>${filteredId}</h2><p>${description}</p>`,
+          const sanitizedTitle = sanitizeHtml(filteredId)
+          const sanitizedDescription = sanitizeHtml(description, {
+            allowedTags: ['h1']
+          })
+          let list = template.list(files) 
+          let html= template.html(sanitizedTitle, list,
+            `<h2>${sanitizedTitle}</h2><p>${sanitizedDescription}</p>`,
             `
             <a href="/create">create</a>
-            <a href="/update?id=${filteredId}">update</a>
+            <a href="/update?id=${sanitizedTitle}">update</a>
             <form name='delete' method='post' 
               onsubmit="const r = confirm('정말 삭제 하시겠습니까?'); 
               if(r){
