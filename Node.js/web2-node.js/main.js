@@ -1,3 +1,4 @@
+console.log('Hello no daemon')
 // 모듈 추출
 const http = require('http')
 const fs = require('fs')
@@ -148,4 +149,4 @@ const app = http.createServer((req, res) => {
     res.writeHead(404)
     res.end('Not Found')
   }
-}).listen(3000)
+}).listen(3000) 
