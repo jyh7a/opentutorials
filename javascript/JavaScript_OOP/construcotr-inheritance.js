@@ -5,7 +5,12 @@ function Person(name, first, second){
 }
 
 Person.prototype.sum = function(){
-  return this.first + this.second
+  if(this.third){
+    return this.first + this.second + this.third
+  }else{
+    return this.first + this.second
+  }
+  // return this.first + this.second
 }
 
 function PersonPlus(name, first, second, third){
@@ -16,7 +21,6 @@ function PersonPlus(name, first, second, third){
 // PersonPlus.prototype.__proto__ = Person.prototype
 PersonPlus.prototype = Object.create(Person.prototype)
 PersonPlus.prototype.constructor = PersonPlus
-
 PersonPlus.prototype.avg = function(){
   return (this.first + this.second + this.third) / 3 
 }
@@ -25,3 +29,4 @@ let kim = new PersonPlus('kim', 10, 20, 30)
 console.log(`kim.sum():`, kim.sum());
 console.log(`kim.avg():`, kim.avg());
 console.log(`kim.constructor:`, kim.constructor);
+console.log(`PersonPlus`, PersonPlus);
