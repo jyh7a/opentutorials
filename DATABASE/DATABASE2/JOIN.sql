@@ -43,3 +43,18 @@ INSERT INTO `topic` VALUES (2,'Oracle','Oracle is ...','2018-01-03 13:01:10',1);
 INSERT INTO `topic` VALUES (3,'SQL Server','SQL Server is ...','2018-01-20 11:01:10',2);
 INSERT INTO `topic` VALUES (4,'PostgreSQL','PostgreSQL is ...','2018-01-23 01:03:03',3);
 INSERT INTO `topic` VALUES (5,'MongoDB','MongoDB is ...','2018-01-30 12:31:03',1);
+
+
+-- comment table & data
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `description` text,
+  `author_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- data
+INSERT INTO `comment` VALUES (1,'Lorem ipsum dolor sit amet, consectetur',1);
+INSERT INTO `comment` VALUES (2,'Fusce at pretium arc, vitae varius',1);
+INSERT INTO `comment` VALUES (3,'Curabitur tristique urna ut ex egestas',2);
+INSERT INTO `comment` VALUES (4,'Morbi aliquet tellus',1);
