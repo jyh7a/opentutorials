@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <!-- lowdb 는 lodash 에 의존하고있다 -->
+  <script src="https://unpkg.com/lodash@4/lodash.min.js"></script>
+  <!-- 이것이 lowdb파일 -->
+  <script src="https://unpkg.com/lowdb@0.17/dist/low.min.js"></script>
+  <!-- 웹브라우저 LocalStorage파일 -->
+  <script src="https://unpkg.com/lowdb@0.17/dist/LocalStorage.min.js"></script>
+  <script>
+
+    var adapter = new LocalStorage('db')
+    // console.log('adapter : ', adapter)
+    var db = low(adapter)
+    // console.log('db : ', db)
+
+    // Set some defaults (required if your JSON file is empty)
+    // db.defaults({ topic: [], author: [] })
+    //   .write()
+
+    // // db.get('author') === db.json.author
+    // db.get('author').push({
+    //   id: 1,
+    //   name: 'egoing',
+    //   profile: 'developer'
+    // }).write()
+
+    // // db.get('topic') === db.json.topic
+    // db.get('topic').push({
+    //   id: 1,
+    //   title: 'lowdb',
+    //   description: 'lowdb is ...',
+    //   created: '2018-01-30',
+    //   author: 1
+    // }).write()
+
+    // db.get('topic').push({
+    //   id: 2,
+    //   title: 'mysql',
+    //   description: 'mysql is ...',
+    //   created: '2018-02-20',
+    //   author: 1
+    // }).write()
+
+    // // GET
+    // console.log(db.get('topic').value())
+    // console.log('find id:1', db.get('topic').find({ id: 1 }).value())
+    // console.log('find title:"mysql"', db.get('topic').find({ title: "mysql", author: 1 }).value())
+
+    // // UPDATE
+    // db.get('topic')
+    //   .find({ id: 2 })
+    //   .assign({ description: 'MySQL & MariaDB' })
+    //   .write()
+
+    // DELETE
+    // db.get('topic')
+    //   .remove({ id: 2 })
+    //   .write()
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

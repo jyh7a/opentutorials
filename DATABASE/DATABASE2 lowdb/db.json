@@ -1,0 +1,49 @@
+{
+  "topic": [
+    {
+      "id": 1,
+      "title": "lowdb",
+      "description": "lowdb is ...",
+      "created": "2018-01-30",
+      "author": 1
+    },
+    {
+      "id": 2,
+      "title": "mysql",
+      "description": "MySQL & MariaDB",
+      "created": "2018-02-20",
+      "author": 1
+    },
+    {
+      "id": "QIZA55r7ku",
+      "title": "PostgreSQL is ...",
+      "description": "PostgreSQL is ...",
+      "created": "2018-02-10",
+      "author": "Vshgkbjqy"
+    },
+    {
+      "id": "L39YxWiO15",
+      "title": "MSSQL",
+      "dscription": "MSSQL is ...",
+      "created": "2018-03-21",
+      "author": "rSUAlZ1NG"
+    }
+  ],
+  "author": [
+    {
+      "id": 1,
+      "name": "egoing",
+      "profile": "developer"
+    },
+    {
+      "id": "Vshgkbjqy",
+      "name": "taeho",
+      "profile": "data scientist"
+    },
+    {
+      "id": "rSUAlZ1NG",
+      "name": "duru",
+      "profile": "db admin"
+    }
+  ]
+}
