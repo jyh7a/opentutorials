@@ -9,6 +9,7 @@ http.createServer((req, res) => {
   console.log(cookies);
   console.log(cookies.yummy_cookie);
   console.log(cookies.tasty_cookie);
+  console.log('test')
 
   res.writeHead(200,{
     'Set-Cookie': [
@@ -20,7 +21,7 @@ http.createServer((req, res) => {
       `HttpOnly=HttpOnly; HttpOnly`,
       `Path=Path; Path=/cookie`,
       `Domain=Domain; Domain=jyh7a.com`
-    ]
+    ] 
   })
   res.end('Cookie!!')
 }).listen(3000) 
