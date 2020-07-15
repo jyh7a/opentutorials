@@ -12,9 +12,14 @@ http.createServer((req, res) => {
 
   res.writeHead(200,{
     'Set-Cookie': [
-      'yummy_cookie = choco',
-      'tasty_cookie = strawberry',
-      `Permanet = cookies; Max-Age = ${60*60*24*30}`
+      'yummy_cookie=choco',
+      'tasty_cookie=strawberry',
+      // `Permanet = cookies; Max-Age = ${60*60*24*30}; Secure`,
+      `Permanet=cookies; Max-Age = ${60*60*24*30};`,
+      `Secure=Secure; Secure`,
+      `HttpOnly=HttpOnly; HttpOnly`,
+      `Path=Path; Path=/cookie`,
+      `Domain=Domain; Domain=jyh7a.com`
     ]
   })
   res.end('Cookie!!')
